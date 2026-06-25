@@ -6,12 +6,14 @@
 </head>
 <body>
     <div id="auth-section">
-        <input type="password" id="masterPassword" placeholder="Пароль">
+        <input type="password" id="masterPassword" placeholder="Мастер-пароль">
         <button onclick="unlock()">Войти</button>
     </div>
+
     <div id="app-section" style="display:none;">
-        <input type="text" id="noteInput" placeholder="Заметка...">
+        <input type="text" id="noteInput" placeholder="Введите заметку...">
         <button onclick="saveNote()">Сохранить</button>
+        <button onclick="logout()">Выйти</button>
     </div>
 
     <script type="module">
@@ -30,32 +32,45 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Шифрование
-        window.encrypt = (text, password) => btoa(text + ":" + password);
-
-        // Логика сессии
+        // Функция входа
         window.unlock = () => {
             const pass = document.getElementById('masterPassword').value;
             if(pass) {
                 sessionStorage.setItem('masterPassword', pass);
                 document.getElementById('auth-section').style.display = 'none';
                 document.getElementById('app-section').style.display = 'block';
+                console.log("Вход выполнен");
             }
         };
 
+        // Функция сохранения
         window.saveNote = async () => {
             const text = document.getElementById('noteInput').value;
             const pass = sessionStorage.getItem('masterPassword');
-            await addDoc(collection(db, "notes"), { 
-                content: window.encrypt(text, pass), 
-                timestamp: new Date() 
-            });
-            alert("Заметка сохранена!");
+            
+            if(!pass) { alert("Сначала войдите!"); return; }
+
+            try {
+                await addDoc(collection(db, "notes"), { 
+                    content: text, 
+                    timestamp: new Date() 
+                });
+                document.getElementById('noteInput').value = '';
+                alert("Заметка сохранена в базу!");
+            } catch (e) {
+                console.error("Ошибка сохранения: ", e);
+                alert("Ошибка! Проверьте консоль.");
+            }
         };
 
+        window.logout = () => {
+            sessionStorage.removeItem('masterPassword');
+            location.reload();
+        };
+
+        // Автоматический вход при обновлении
         window.onload = () => {
             if (sessionStorage.getItem('masterPassword')) {
-                document.getElementById('masterPassword').value = sessionStorage.getItem('masterPassword');
                 unlock();
             }
         };
