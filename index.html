@@ -328,37 +328,74 @@
         }
     }
 
+// --- ЗАЩИТА ОТ СПАМ-РЕГИСТРАЦИЙ ---
+    function checkRegistrationLimit() {
+        const attempts = JSON.parse(localStorage.getItem('reg_attempts') || '[]');
+        const now = Date.now();
+        const recentAttempts = attempts.filter(ts => now - ts < 3600000);
+        if (recentAttempts.length >= 3) {
+            alert("Слишком много попыток регистрации. Попробуйте через час.");
+            return false;
+        }
+        recentAttempts.push(now);
+        localStorage.setItem('reg_attempts', JSON.stringify(recentAttempts));
+        return true;
+    }
+
+    // --- РЕГИСТРАЦИЯ И ФИКСАЦИЯ СЕЙФА ---
     function registerNewVault() {
+        if (!checkRegistrationLimit()) return;
+        
         const id = document.getElementById('new-generated-id').innerText;
         const pass = document.getElementById('register-pass').value;
         const passConf = document.getElementById('register-pass-confirm').value;
+        
         if(pass.length < 6) return alert("Пароль должен быть минимум 6 символов.");
         if(pass !== passConf) return alert("Пароли не совпадают!");
         
+        const initialDB = { 
+            money: [], tasks: [], events: [], nutrition: [], capsules: [], sessions: [],
+            settings: { role: 'universal' } 
+        };
+        
         vaultKey = id + pass;
-        saveVault(); // Сохраняем пустую базу
-        alert("Сейф создан! Запишите ID и войдите.");
+        const encrypted = CryptoJS.AES.encrypt(JSON.stringify(initialDB), vaultKey).toString();
+        localStorage.setItem(`neroma_vault_${id}`, encrypted);
+        
+        alert("Сейф успешно создан!");
         toggleAuthMode('login');
         document.getElementById('login-id').value = id;
     }
 
+    // --- АУТЕНТИФИКАЦИЯ ---
     function authenticate() {
         const id = document.getElementById('login-id').value;
         const pass = document.getElementById('login-pass').value;
+        
         if(!id || !pass) return alert("Введите данные");
 
-        vaultKey = id + pass;
         const encrypted = localStorage.getItem(`neroma_vault_${id}`);
-        if(!encrypted) return alert("Сейф не найден.");
+        if(!encrypted) return alert("Ошибка: Сейф не найден. Проверьте ID (формат XXXX-XXXX-XXXX-XXXX).");
 
         try {
-            DB = JSON.parse(CryptoJS.AES.decrypt(encrypted, vaultKey).toString(CryptoJS.enc.Utf8));
+            const bytes = CryptoJS.AES.decrypt(encrypted, id + pass);
+            const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
+            
+            if(!decryptedData) throw new Error();
+            
+            DB = JSON.parse(decryptedData);
+            vaultKey = id + pass;
+            
             manageSession();
             document.getElementById('auth-screen').classList.add('hidden');
             document.getElementById('app-screen').classList.remove('hidden');
             initApp();
-        } catch(e) { alert("Неверный пароль."); }
+        } catch(e) {
+            alert("Ошибка: Неверный пароль.");
+        }
     }
+    
+    // ... (тут оставь все остальные функции: initApp, switchTab, renderAll и т.д.)
 
     function saveVault() {
         if(!vaultKey) return;
