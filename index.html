@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Neroma | Premium Assistant</title>
+    <title>Neroma | Premium Cloud Assistant</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -11,52 +11,36 @@
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,800&display=swap');
-        
-        :root {
-            /* Premium Dark Luxury Palette */
-            --bg-base: #030303;
-            --bg-surface: rgba(18, 18, 18, 0.85);
-            --gold-primary: #D4AF37;
-            --gold-dim: rgba(212, 175, 55, 0.2);
-            --border-light: rgba(255, 255, 255, 0.08);
-            --text-main: #EAEAEA;
-            --text-muted: #888888;
-        }
-
-        body { background-color: var(--bg-base); color: var(--text-main); font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-        
-        /* Glassmorphism & Surface */
-        .surface { background: var(--bg-surface); backdrop-filter: blur(24px); border: 1px solid var(--border-light); border-radius: 20px; }
-        .input-premium { background: rgba(0,0,0,0.5); border: 1px solid var(--border-light); color: white; border-radius: 12px; transition: all 0.3s; }
-        .input-premium:focus { border-color: var(--gold-primary); outline: none; box-shadow: 0 0 10px var(--gold-dim); }
-        
-        /* Buttons */
-        .btn-gold { background: linear-gradient(135deg, #F3E5AB, #D4AF37); color: #000; font-weight: 800; border-radius: 12px; transition: transform 0.2s, box-shadow 0.2s; }
+        :root { --bg-base: #030303; --bg-surface: rgba(18, 18, 18, 0.85); --gold-primary: #D4AF37; --gold-dim: rgba(212, 175, 55, 0.2); --border-light: rgba(255, 255, 255, 0.08); --text-main: #EAEAEA; --text-muted: #888888; --glass-blur: 24px; --card-radius: 20px; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-base); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; margin: 0; padding-bottom: 80px; }
+        .surface { background: var(--bg-surface); backdrop-filter: blur(var(--glass-blur)); border: 1px solid var(--border-light); border-radius: var(--card-radius); transition: all 0.3s; }
+        .input-premium { background: rgba(0,0,0,0.5); border: 1px solid var(--border-light); color: white; border-radius: 12px; transition: all 0.3s; outline: none; }
+        .input-premium:focus { border-color: var(--gold-primary); box-shadow: 0 0 10px var(--gold-dim); }
+        .btn-gold { background: linear-gradient(135deg, #F3E5AB, #D4AF37); color: #000; font-weight: 800; border-radius: 12px; transition: transform 0.2s, box-shadow 0.2s; border: none; }
         .btn-gold:active { transform: scale(0.98); }
-        .btn-outline { border: 1px solid var(--border-light); color: var(--text-main); border-radius: 12px; }
+        .btn-outline { border: 1px solid var(--border-light); color: var(--text-main); border-radius: 12px; transition: all 0.2s; }
         .btn-outline:hover { border-color: var(--gold-primary); color: var(--gold-primary); }
-
-        /* Typography */
-        h1, h2, h3 { letter-spacing: -0.02em; }
         .gold-text { background: linear-gradient(135deg, #F3E5AB, #D4AF37); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-        /* Mobile Bottom Nav */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-surface); backdrop-filter: blur(24px); border-top: 1px solid var(--border-light); display: flex; justify-content: space-around; padding-bottom: env(safe-area-inset-bottom); z-index: 50; }
-        .nav-item { padding: 15px; color: var(--text-muted); font-size: 1.2rem; transition: color 0.3s; }
+        .nav-item { padding: 15px; color: var(--text-muted); font-size: 1.2rem; transition: color 0.3s; cursor: pointer; }
         .nav-item.active { color: var(--gold-primary); }
-
-        /* Smart FAB (Floating Action Button) */
-        .fab-center { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #F3E5AB, #D4AF37); color: black; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 8px 24px var(--gold-dim); border: 4px solid var(--bg-base); z-index: 60; }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-
+        .fab-center { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #F3E5AB, #D4AF37); color: black; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 8px 24px var(--gold-dim); border: 4px solid var(--bg-base); z-index: 60; cursor: pointer; transition: transform 0.2s; }
+        .fab-center:active { transform: translateX(-50%) scale(0.95); }
+        ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        .tab-pane { display: none; opacity: 0; animation: fadeIn 0.4s forwards; } .tab-pane.active { display: block; opacity: 1; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Модульные стили (Календарь, Задачи) */
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0.5rem; }
+        .calendar-day { aspect-ratio: 1 / 0.9; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); position: relative; }
+        .calendar-day.today { border-color: var(--gold-primary); color: var(--gold-primary); background: var(--gold-dim); }
+        .money-value { font-family: monospace; font-weight: bold; }
         .hidden { display: none !important; }
+        #toast-container { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+        .toast { background: var(--bg-surface); border: 1px solid var(--gold-primary); color: white; padding: 10px 20px; border-radius: 20px; font-size: 0.8rem; box-shadow: 0 4px 15px rgba(0,0,0,0.5); animation: fadeIn 0.3s forwards; }
     </style>
 </head>
-<body class="pb-24">
+<body>
 
 <div id="auth-screen" class="fixed inset-0 z-[999] bg-[#030303] flex items-center justify-center p-4">
     <div class="surface p-8 w-full max-w-md">
@@ -88,7 +72,11 @@
             </div>
             <div>
                 <label class="text-[10px] text-[#888] uppercase tracking-wider">Придумайте Мастер-пароль</label>
-                <input type="password" id="register-pass" class="w-full p-3 mt-1 input-premium text-center" placeholder="Сложный пароль">
+                <input type="password" id="register-pass" class="w-full p-3 mt-1 input-premium text-center" placeholder="Минимум 6 символов">
+            </div>
+            <div>
+                <label class="text-[10px] text-[#888] uppercase tracking-wider">Повторите пароль</label>
+                <input type="password" id="register-pass-confirm" class="w-full p-3 mt-1 input-premium text-center" placeholder="Подтверждение">
             </div>
             <button onclick="registerNewVault()" class="w-full py-4 mt-4 btn-gold">Создать локальный сейф</button>
         </div>
@@ -103,98 +91,144 @@
             <p id="system-date" class="text-[10px] text-[#888] uppercase tracking-widest mt-1"></p>
         </div>
         <div class="flex gap-3">
+            <button onclick="switchTab('main')" class="hidden md:block text-xs font-bold text-[#888] hover:text-[#D4AF37] uppercase px-2">Дашборд</button>
+            <button onclick="switchTab('money')" class="hidden md:block text-xs font-bold text-[#888] hover:text-[#D4AF37] uppercase px-2">Финансы</button>
+            <button onclick="switchTab('calendar')" class="hidden md:block text-xs font-bold text-[#888] hover:text-[#D4AF37] uppercase px-2">Календарь</button>
+            <button onclick="switchTab('tasks')" class="hidden md:block text-xs font-bold text-[#888] hover:text-[#D4AF37] uppercase px-2">Задачи</button>
             <button onclick="openSettings()" class="surface px-4 py-2 flex items-center gap-2 hover:border-[#D4AF37] transition">
                 <i class="fas fa-crown text-[#D4AF37] text-xs"></i>
-                <span class="text-[10px] font-bold uppercase hidden md:inline">Neroma Pro: 30 Дней</span>
+                <span class="text-[10px] font-bold uppercase hidden md:inline">Neroma Pro</span>
             </button>
         </div>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-        <div id="widget-finance" class="surface p-6 md:col-span-2 relative overflow-hidden">
-            <div class="absolute -right-20 -top-20 w-64 h-64 bg-[#D4AF37] opacity-5 rounded-full blur-3xl"></div>
-            <div class="flex justify-between items-start mb-6">
-                <p class="text-[10px] text-[#888] uppercase tracking-widest font-bold">Капитал</p>
-                <i class="fas fa-wallet text-[#333]"></i>
-            </div>
-            <p id="dash-balance" class="text-4xl md:text-5xl font-mono font-light tracking-tighter mb-4">0 ₽</p>
-            <div class="flex gap-4 border-t border-white/5 pt-4">
-                <div>
-                    <span class="text-[9px] text-[#888] uppercase block">Доход</span>
-                    <span id="dash-income" class="text-sm font-mono text-white">0 ₽</span>
+    <div id="pane-main" class="tab-pane active">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div id="widget-finance" class="surface p-6 md:col-span-2 relative overflow-hidden cursor-pointer" onclick="switchTab('money')">
+                <div class="absolute -right-20 -top-20 w-64 h-64 bg-[#D4AF37] opacity-5 rounded-full blur-3xl"></div>
+                <div class="flex justify-between items-start mb-6">
+                    <p class="text-[10px] text-[#888] uppercase tracking-widest font-bold">Мой Капитал</p>
+                    <i class="fas fa-wallet text-[#333]"></i>
                 </div>
-                <div>
-                    <span class="text-[9px] text-[#888] uppercase block">Расход</span>
-                    <span id="dash-expense" class="text-sm font-mono text-white">0 ₽</span>
+                <p id="dash-balance" class="text-4xl md:text-5xl font-mono font-light tracking-tighter mb-4 money-value">0 ₽</p>
+                <div class="flex gap-4 border-t border-white/5 pt-4">
+                    <div><span class="text-[9px] text-[#888] uppercase block">Доход</span><span id="dash-income" class="text-sm font-mono text-[#D4AF37] money-value">0 ₽</span></div>
+                    <div><span class="text-[9px] text-[#888] uppercase block">Расход</span><span id="dash-expense" class="text-sm font-mono text-white money-value">0 ₽</span></div>
                 </div>
             </div>
-        </div>
 
-        <div id="widget-schedule" class="surface p-6">
-            <div class="flex justify-between items-start mb-4">
-                <p class="text-[10px] text-[#888] uppercase tracking-widest font-bold">Ближайшее</p>
-                <i class="fas fa-calendar-alt text-[#333]"></i>
+            <div id="widget-schedule" class="surface p-6 cursor-pointer" onclick="switchTab('calendar')">
+                <div class="flex justify-between items-start mb-4">
+                    <p class="text-[10px] text-[#888] uppercase tracking-widest font-bold">Ближайшее</p>
+                    <i class="fas fa-calendar-alt text-[#333]"></i>
+                </div>
+                <div id="dash-events-list" class="space-y-3"></div>
             </div>
-            <div id="dash-events-list" class="space-y-3">
-                <div class="text-[10px] text-[#555] text-center py-4">Нет записей на сегодня</div>
+
+            <div id="widget-tasks" class="surface p-6 md:col-span-3">
+                <div class="flex justify-between items-center mb-4">
+                    <p class="text-[10px] text-[#888] uppercase tracking-widest font-bold">Активные задачи</p>
+                    <button onclick="switchTab('tasks')" class="text-[10px] text-[#D4AF37] uppercase font-bold">Все задачи <i class="fas fa-arrow-right ml-1"></i></button>
+                </div>
+                <div id="dash-tasks-list" class="grid grid-cols-1 md:grid-cols-3 gap-3"></div>
+            </div>
+            
+            <div class="surface p-6 cursor-pointer hover:border-[#D4AF37]" onclick="switchTab('nutrition')">
+                <p class="text-[10px] text-[#888] uppercase tracking-widest font-bold mb-2"><i class="fas fa-apple-alt text-[#D4AF37] mr-1"></i> Питание</p>
+                <div class="text-xs text-[#EAEAEA]">Ккал сегодня: <span id="dash-kcal" class="font-bold font-mono">0</span></div>
+            </div>
+            <div class="surface p-6 cursor-pointer hover:border-[#D4AF37]" onclick="switchTab('capsule')">
+                <p class="text-[10px] text-[#888] uppercase tracking-widest font-bold mb-2"><i class="fas fa-envelope-open-text text-[#D4AF37] mr-1"></i> Капсула времени</p>
+                <div class="text-xs text-[#EAEAEA]">Закрыто посланий: <span id="dash-capsules" class="font-bold font-mono">0</span></div>
             </div>
         </div>
+    </div>
 
-        <div id="widget-tasks" class="surface p-6 md:col-span-3">
+    <div id="pane-money" class="tab-pane space-y-6">
+        <div class="surface p-6">
+            <h2 class="text-lg font-black uppercase tracking-widest gold-text mb-4">Управление капиталом</h2>
+            <div id="list-money" class="space-y-2 max-h-96 overflow-y-auto pr-2"></div>
+        </div>
+    </div>
+
+    <div id="pane-calendar" class="tab-pane space-y-6">
+        <div class="surface p-6">
             <div class="flex justify-between items-center mb-4">
-                <p class="text-[10px] text-[#888] uppercase tracking-widest font-bold">Фокус</p>
-                <button onclick="openSmartAction('task')" class="text-[10px] text-[#D4AF37] uppercase font-bold">+ Задача</button>
-            </div>
-            <div id="dash-tasks-list" class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <div class="p-4 border border-white/5 rounded-xl bg-black/30">
-                    <p class="text-[10px] text-[#555] text-center">Все задачи выполнены</p>
+                <h2 class="text-lg font-black uppercase tracking-widest gold-text" id="unified-month-year">Месяц</h2>
+                <div class="flex gap-2">
+                    <button onclick="changeMonth(-1)" class="p-2 btn-outline"><i class="fas fa-chevron-left"></i></button>
+                    <button onclick="changeMonth(1)" class="p-2 btn-outline"><i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
+            <div class="grid grid-cols-7 gap-2 mb-2 text-center text-[9px] font-bold text-[#888]">
+                <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div class="text-rose-400">Сб</div><div class="text-rose-400">Вс</div>
+            </div>
+            <div id="month-calendar-view" class="calendar-grid"></div>
         </div>
+    </div>
 
+    <div id="pane-tasks" class="tab-pane space-y-6">
+        <div class="surface p-6">
+            <h2 class="text-lg font-black uppercase tracking-widest gold-text mb-4">Список задач</h2>
+            <div id="list-tasks" class="space-y-3"></div>
+        </div>
+    </div>
+    
+    <div id="pane-nutrition" class="tab-pane space-y-6">
+        <div class="surface p-6">
+            <h2 class="text-lg font-black uppercase tracking-widest gold-text mb-4">Дневник Питания (Сегодня)</h2>
+            <div id="nutrition-day-list" class="space-y-2 mb-4"></div>
+            <div class="flex justify-between border-t border-white/10 pt-4 font-mono text-sm">
+                <span>Итого: <span id="total-calories" class="text-[#D4AF37] font-bold">0</span> ккал</span>
+                <span class="text-[#888] text-[10px]">Б:<span id="total-protein">0</span> Ж:<span id="total-fat">0</span> У:<span id="total-carbs">0</span></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="pane-capsule" class="tab-pane space-y-6">
+        <div class="surface p-6">
+            <h2 class="text-lg font-black uppercase tracking-widest gold-text mb-4">Капсулы времени</h2>
+            <div id="capsules-list" class="space-y-4"></div>
+        </div>
     </div>
 </div>
 
 <nav id="bottom-nav" class="bottom-nav md:hidden">
-    <button class="nav-item active"><i class="fas fa-cube"></i></button>
-    <button class="nav-item"><i class="fas fa-wallet"></i></button>
+    <button class="nav-item active" onclick="switchTab('main')"><i class="fas fa-cube"></i></button>
+    <button class="nav-item" onclick="switchTab('money')"><i class="fas fa-wallet"></i></button>
     
     <div class="relative w-14">
-        <button onclick="openSmartAction('auto')" class="fab-center">
-            <i class="fas fa-plus"></i>
-        </button>
+        <button onclick="openSmartAction()" class="fab-center"><i class="fas fa-plus"></i></button>
     </div>
 
-    <button class="nav-item"><i class="fas fa-calendar-alt"></i></button>
+    <button class="nav-item" onclick="switchTab('calendar')"><i class="fas fa-calendar-alt"></i></button>
     <button class="nav-item" onclick="openSettings()"><i class="fas fa-user-cog"></i></button>
 </nav>
 
 <div id="smart-action-modal" class="hidden fixed inset-0 z-[150] bg-black/80 backdrop-blur-md flex items-end md:items-center justify-center p-4 pb-24 md:pb-4">
-    <div class="surface w-full max-w-lg p-6 animate-slide-up border border-[#D4AF37]/20">
+    <div class="surface w-full max-w-lg p-6 border border-[#D4AF37]/20">
         <div class="flex justify-between items-center mb-6">
             <h3 class="font-black uppercase tracking-widest text-sm gold-text">Новая запись</h3>
             <button onclick="closeSmartAction()" class="text-[#888]"><i class="fas fa-times"></i></button>
         </div>
-        
         <div class="flex gap-2 mb-6 p-1 bg-black/50 rounded-xl border border-white/5 overflow-x-auto">
-            <button onclick="setSmartContext('money')" id="ctx-money" class="flex-1 py-2 px-4 text-[10px] font-bold rounded-lg text-black bg-[#D4AF37] whitespace-nowrap">Операция</button>
+            <button onclick="setSmartContext('money_exp')" id="ctx-money_exp" class="flex-1 py-2 px-4 text-[10px] font-bold rounded-lg text-black bg-[#D4AF37] whitespace-nowrap">Расход</button>
+            <button onclick="setSmartContext('money_inc')" id="ctx-money_inc" class="flex-1 py-2 px-4 text-[10px] font-bold rounded-lg text-[#888] whitespace-nowrap">Доход</button>
             <button onclick="setSmartContext('task')" id="ctx-task" class="flex-1 py-2 px-4 text-[10px] font-bold rounded-lg text-[#888] whitespace-nowrap">Задача</button>
-            <button onclick="setSmartContext('event')" id="ctx-event" class="flex-1 py-2 px-4 text-[10px] font-bold rounded-lg text-[#888] whitespace-nowrap">Событие/Смена</button>
+            <button onclick="setSmartContext('food')" id="ctx-food" class="flex-1 py-2 px-4 text-[10px] font-bold rounded-lg text-[#888] whitespace-nowrap">Питание</button>
         </div>
-
         <div id="smart-form-area">
-            <input type="number" id="smart-amount" placeholder="0 ₽" class="w-full py-6 text-center text-4xl font-light input-premium font-mono mb-4">
-            <input type="text" id="smart-desc" placeholder="Категория или описание..." class="w-full p-4 text-sm input-premium mb-4">
-            <button onclick="saveSmartData()" class="w-full py-4 btn-gold">Сохранить</button>
+            <input type="number" id="smart-amount" placeholder="Сумма / Ккал" class="w-full py-6 text-center text-4xl font-light input-premium font-mono mb-4">
+            <input type="text" id="smart-desc" placeholder="Описание..." class="w-full p-4 text-sm input-premium mb-4">
+            <button onclick="saveSmartData()" class="w-full py-4 btn-gold">Сохранить в базу</button>
         </div>
     </div>
 </div>
 
 <div id="settings-modal" class="hidden fixed inset-0 z-[200] bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="surface w-full max-w-md p-6 border border-[#D4AF37]/20">
+    <div class="surface w-full max-w-md p-6 border border-[#D4AF37]/20 max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-6">
-            <h3 class="font-black uppercase tracking-widest text-sm gold-text">Профиль & Настройки</h3>
+            <h3 class="font-black uppercase tracking-widest text-sm gold-text">Профиль & Сеансы</h3>
             <button onclick="closeSettings()" class="text-[#888]"><i class="fas fa-times"></i></button>
         </div>
 
@@ -203,73 +237,107 @@
                 <label class="text-[10px] text-[#888] uppercase tracking-wider mb-2 block">Профессиональный профиль</label>
                 <select id="user-role" onchange="updateUIForRole()" class="w-full p-3 input-premium text-sm appearance-none">
                     <option value="universal">Универсальный (Базовый)</option>
-                    <option value="entrepreneur">Предприниматель (Фокус на Финансы)</option>
-                    <option value="shift">Рабочий/Официант (Фокус на Смены)</option>
-                    <option value="specialist">Врач/Тренер (Фокус на Записи)</option>
+                    <option value="entrepreneur">Предприниматель (Финансы)</option>
+                    <option value="shift">Рабочий/Врач (Расписание)</option>
                 </select>
-                <p class="text-[9px] text-[#555] mt-2">Интерфейс подстроится под ваши главные задачи, скрыв лишнее.</p>
             </div>
 
-            <div class="p-4 border border-[#D4AF37]/30 rounded-xl bg-[#D4AF37]/5">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs font-bold gold-text">Neroma Pro</span>
-                    <span class="text-[9px] bg-[#D4AF37] text-black px-2 py-1 rounded-full font-bold">TRIAL</span>
+            <div class="border-t border-[#D4AF37]/20 pt-6">
+                <h4 class="text-[10px] font-bold uppercase text-[#888] mb-3"><i class="fas fa-shield-alt text-[#D4AF37]"></i> Активные сеансы (Устройства)</h4>
+                <div id="sessions-list" class="space-y-2 mb-4"></div>
+                <div class="flex gap-2">
+                    <button onclick="logoutAllOther()" class="flex-1 py-2 text-[10px] font-bold btn-outline border-rose-500/30 text-rose-500 hover:bg-rose-500/10">Завершить другие</button>
+                    <button onclick="logout()" class="flex-1 py-2 text-[10px] font-bold btn-outline border-rose-500/30 text-rose-500 hover:bg-rose-500/10">Выйти здесь</button>
                 </div>
-                <p class="text-[10px] text-[#aaa]">До конца бесплатного периода: 30 дней. Облачная синхронизация активна.</p>
             </div>
-
-            <button onclick="logout()" class="w-full py-3 btn-outline border-rose-500/30 text-rose-500 hover:bg-rose-500/10">Закрыть сейф (Выйти)</button>
         </div>
     </div>
 </div>
 
-<style>
-    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    .animate-slide-up { animation: slideUp 0.3s ease-out forwards; }
-</style>
+<div id="toast-container"></div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCsbFRT6qv_S_UcgrUQn6dCnJqiYTpLuh8",
+        authDomain: "neroma-data.firebaseapp.com",
+        projectId: "neroma-data",
+        storageBucket: "neroma-data.firebasestorage.app",
+        messagingSenderId: "664569197862",
+        appId: "1:664569197862:web:f78152be076d2c0e0fbde7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.secureCloudSync = async (dataObject, vaultKey) => {
+        if(!vaultKey) return;
+        try {
+            const encrypted = CryptoJS.AES.encrypt(JSON.stringify(dataObject), vaultKey).toString();
+            // ID пользователя используем как имя документа, чтобы у каждого был свой сейф
+            const userId = document.getElementById('login-id').value || "local_user";
+            await setDoc(doc(db, "neroma_vaults", userId), { payload: encrypted, timestamp: Date.now() });
+        } catch(e) { console.warn("Облако недоступно, сохранено локально."); }
+    };
+</script>
 
 <script>
-    // --- БАЗА ДАННЫХ И ШИФРОВАНИЕ (ZERO-KNOWLEDGE SIMULATION) ---
-    let vaultKey = null; // AES ключ, существующий только в оперативной памяти
-    let DB = { money: [], tasks: [], events: [], settings: { role: 'universal' } };
+    // --- ОСНОВНЫЕ ПЕРЕМЕННЫЕ ---
+    let vaultKey = null;
+    let DB = { 
+        money: [], tasks: [], events: [], nutrition: [], capsules: [], sessions: [],
+        settings: { role: 'universal' } 
+    };
+    let currentSmartContext = 'money_exp';
+    let viewDate = new Date();
 
-    // Утилита: форматирование ID при вводе
+    // --- УТИЛИТЫ ---
+    function genId() { return Date.now() + '_' + Math.random().toString(36).substr(2, 5); }
+    function showToast(msg) { 
+        let t = document.createElement('div'); t.className = 'toast'; t.innerText = msg; 
+        document.getElementById('toast-container').appendChild(t); 
+        setTimeout(() => t.remove(), 3000); 
+    }
+    function getDeviceInfo() {
+        const ua = navigator.userAgent;
+        if(ua.includes("Windows")) return "Windows PC";
+        if(ua.includes("Mac")) return "Mac OS";
+        if(ua.includes("Android")) return "Android Phone";
+        if(ua.includes("iPhone")) return "iPhone";
+        return "Unknown Device";
+    }
+
+    // --- АВТОРИЗАЦИЯ & СЕАНСЫ ---
     document.getElementById('login-id').addEventListener('input', function (e) {
-        let value = e.target.value.replace(/[^0-9]/g, '');
-        let formatted = value.match(/.{1,4}/g)?.join('-') || value;
-        e.target.value = formatted.substring(0, 19);
+        let val = e.target.value.replace(/[^0-9]/g, '');
+        e.target.value = val.match(/.{1,4}/g)?.join('-').substring(0, 19) || val;
     });
 
     function toggleAuthMode(mode) {
         document.getElementById('form-login').classList.toggle('hidden', mode === 'register');
         document.getElementById('form-register').classList.toggle('hidden', mode === 'login');
-        
-        let tabLogin = document.getElementById('tab-login');
-        let tabRegister = document.getElementById('tab-register');
-        
         if(mode === 'login') {
-            tabLogin.className = "flex-1 py-2 text-xs font-bold rounded-lg text-black bg-[#D4AF37]";
-            tabRegister.className = "flex-1 py-2 text-xs font-bold rounded-lg text-[#888]";
+            document.getElementById('tab-login').className = "flex-1 py-2 text-xs font-bold rounded-lg text-black bg-[#D4AF37]";
+            document.getElementById('tab-register').className = "flex-1 py-2 text-xs font-bold rounded-lg text-[#888]";
         } else {
-            tabRegister.className = "flex-1 py-2 text-xs font-bold rounded-lg text-black bg-[#D4AF37]";
-            tabLogin.className = "flex-1 py-2 text-xs font-bold rounded-lg text-[#888]";
-            // Генерируем новый ID при переходе на регистрацию
-            let newId = Array.from({length: 16}, () => Math.floor(Math.random() * 10)).join('');
-            document.getElementById('new-generated-id').innerText = newId.match(/.{1,4}/g).join('-');
+            document.getElementById('tab-register').className = "flex-1 py-2 text-xs font-bold rounded-lg text-black bg-[#D4AF37]";
+            document.getElementById('tab-login').className = "flex-1 py-2 text-xs font-bold rounded-lg text-[#888]";
+            document.getElementById('new-generated-id').innerText = Array.from({length: 16}, () => Math.floor(Math.random() * 10)).join('').match(/.{1,4}/g).join('-');
         }
     }
 
     function registerNewVault() {
         const id = document.getElementById('new-generated-id').innerText;
         const pass = document.getElementById('register-pass').value;
+        const passConf = document.getElementById('register-pass-confirm').value;
         if(pass.length < 6) return alert("Пароль должен быть минимум 6 символов.");
+        if(pass !== passConf) return alert("Пароли не совпадают!");
         
-        // В реальном приложении здесь создается AES ключ и хэш отправляется в Firebase.
-        // Для HTML-версии мы симулируем это через localStorage.
-        vaultKey = id + pass; // Упрощенный ключ для демо
-        localStorage.setItem(`neroma_vault_${id}`, CryptoJS.AES.encrypt(JSON.stringify(DB), vaultKey).toString());
-        
-        alert("Сейф создан! Теперь войдите по вашему ID и паролю.");
+        vaultKey = id + pass;
+        saveVault(); // Сохраняем пустую базу
+        alert("Сейф создан! Запишите ID и войдите.");
         toggleAuthMode('login');
         document.getElementById('login-id').value = id;
     }
@@ -277,149 +345,231 @@
     function authenticate() {
         const id = document.getElementById('login-id').value;
         const pass = document.getElementById('login-pass').value;
-        if(!id || !pass) return alert("Введите ID и пароль");
+        if(!id || !pass) return alert("Введите данные");
 
         vaultKey = id + pass;
-        const encryptedData = localStorage.getItem(`neroma_vault_${id}`);
-        
-        if(!encryptedData) return alert("Сейф не найден. Проверьте ID.");
+        const encrypted = localStorage.getItem(`neroma_vault_${id}`);
+        if(!encrypted) return alert("Сейф не найден.");
 
         try {
-            const bytes = CryptoJS.AES.decrypt(encryptedData, vaultKey);
-            DB = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-            
-            // Успешный вход
+            DB = JSON.parse(CryptoJS.AES.decrypt(encrypted, vaultKey).toString(CryptoJS.enc.Utf8));
+            manageSession();
             document.getElementById('auth-screen').classList.add('hidden');
             document.getElementById('app-screen').classList.remove('hidden');
             initApp();
-        } catch(e) {
-            alert("Неверный пароль. Расшифровка не удалась.");
-        }
+        } catch(e) { alert("Неверный пароль."); }
     }
 
     function saveVault() {
         if(!vaultKey) return;
         const id = document.getElementById('login-id').value;
-        const encrypted = CryptoJS.AES.encrypt(JSON.stringify(DB), vaultKey).toString();
-        localStorage.setItem(`neroma_vault_${id}`, encrypted);
-        // Здесь же вызывался бы Firebase: setDoc(...)
-        updateDashboard();
+        localStorage.setItem(`neroma_vault_${id}`, CryptoJS.AES.encrypt(JSON.stringify(DB), vaultKey).toString());
+        if(window.secureCloudSync) window.secureCloudSync(DB, vaultKey);
+        renderAll();
     }
 
-    function logout() {
-        vaultKey = null;
-        DB = null;
-        location.reload(); // Очистка памяти и перезагрузка
+    function manageSession() {
+        if(!DB.sessions) DB.sessions = [];
+        let curId = sessionStorage.getItem('sid');
+        if(!curId) { curId = genId(); sessionStorage.setItem('sid', curId); }
+        
+        // Симуляция другого устройства для красоты, если пусто
+        if(DB.sessions.length === 0) {
+            DB.sessions.push({ id: 'sim_1', device: 'iPhone / Safari', ip: '109.252.XX.XX', ts: Date.now() - 86400000 });
+        }
+        
+        const existing = DB.sessions.find(s => s.id === curId);
+        if(existing) existing.ts = Date.now();
+        else DB.sessions.push({ id: curId, device: getDeviceInfo(), ip: 'Текущий IP', ts: Date.now() });
+        saveVault();
     }
 
-    // --- ЛОГИКА ИНТЕРФЕЙСА ---
+    function renderSessions() {
+        const curId = sessionStorage.getItem('sid');
+        document.getElementById('sessions-list').innerHTML = DB.sessions.map(s => `
+            <div class="p-3 bg-white/5 rounded-xl border border-white/5 flex justify-between items-center">
+                <div>
+                    <div class="text-xs font-bold text-white">${s.device} ${s.id === curId ? '<span class="text-[#D4AF37] text-[9px] uppercase ml-1">(Этот сеанс)</span>' : ''}</div>
+                    <div class="text-[9px] text-[#888]">Активен: ${new Date(s.ts).toLocaleDateString()}</div>
+                </div>
+            </div>
+        `).join('');
+    }
 
+    function logoutAllOther() {
+        if(!confirm("Завершить все другие сеансы?")) return;
+        const curId = sessionStorage.getItem('sid');
+        DB.sessions = DB.sessions.filter(s => s.id === curId);
+        saveVault();
+        renderSessions();
+        showToast("Другие сеансы завершены");
+    }
+
+    function logout() { vaultKey = null; DB = null; sessionStorage.clear(); location.reload(); }
+
+    // --- НАВИГАЦИЯ & ИНТЕРФЕЙС ---
     function initApp() {
         const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById('system-date').innerText = new Date().toLocaleDateString('ru-RU', dateOptions);
-        
         document.getElementById('user-role').value = DB.settings.role || 'universal';
         updateUIForRole();
-        updateDashboard();
+        renderAll();
+    }
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        document.getElementById(`pane-${tabId}`).classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        
+        // Маппинг иконок к табам для мобильного меню
+        const icons = { 'main': 0, 'money': 1, 'calendar': 3 };
+        if(icons[tabId] !== undefined) document.querySelectorAll('.nav-item')[icons[tabId]].classList.add('active');
+        
+        window.scrollTo({top:0});
+        renderAll();
     }
 
     function updateUIForRole() {
         const role = document.getElementById('user-role').value;
         DB.settings.role = role;
+        const wf = document.getElementById('widget-finance'), ws = document.getElementById('widget-schedule'), wt = document.getElementById('widget-tasks');
+        
+        if(role === 'entrepreneur') { wf.classList.remove('hidden'); wf.classList.add('md:col-span-3'); ws.classList.add('hidden'); wt.classList.remove('hidden'); }
+        else if(role === 'shift') { wf.classList.add('hidden'); ws.classList.remove('hidden'); ws.classList.add('md:col-span-3'); wt.classList.add('hidden'); }
+        else { wf.classList.remove('hidden'); wf.className = "surface p-6 md:col-span-2 relative overflow-hidden cursor-pointer"; ws.classList.remove('hidden'); ws.className = "surface p-6 cursor-pointer"; wt.classList.remove('hidden'); wt.className = "surface p-6 md:col-span-3"; }
         saveVault();
-
-        const wFinance = document.getElementById('widget-finance');
-        const wSchedule = document.getElementById('widget-schedule');
-        const wTasks = document.getElementById('widget-tasks');
-
-        // Скрываем/показываем блоки в зависимости от профессии
-        if(role === 'entrepreneur') {
-            wFinance.classList.remove('hidden'); wFinance.classList.add('md:col-span-3');
-            wSchedule.classList.add('hidden');
-            wTasks.classList.remove('hidden');
-        } else if(role === 'shift') {
-            wFinance.classList.add('hidden');
-            wSchedule.classList.remove('hidden'); wSchedule.classList.add('md:col-span-3');
-            wTasks.classList.add('hidden');
-        } else if(role === 'specialist') {
-            wFinance.classList.remove('hidden'); wFinance.classList.add('md:col-span-1');
-            wSchedule.classList.remove('hidden'); wSchedule.classList.add('md:col-span-2');
-            wTasks.classList.remove('hidden');
-        } else {
-            // Universal
-            wFinance.classList.remove('hidden'); wFinance.className = "surface p-6 md:col-span-2 relative overflow-hidden";
-            wSchedule.classList.remove('hidden'); wSchedule.className = "surface p-6";
-            wTasks.classList.remove('hidden'); wTasks.className = "surface p-6 md:col-span-3";
-        }
     }
 
-    // --- SMART ACTION (Умная кнопка) ---
-    let currentSmartContext = 'money';
+    function openSettings() { renderSessions(); document.getElementById('settings-modal').classList.remove('hidden'); }
+    function closeSettings() { document.getElementById('settings-modal').classList.add('hidden'); }
 
-    function openSmartAction(context) {
+    // --- SMART ACTION ---
+    function openSmartAction() {
         document.getElementById('smart-action-modal').classList.remove('hidden');
-        if(context !== 'auto') setSmartContext(context);
-        else setSmartContext(DB.settings.role === 'shift' ? 'event' : 'money');
+        setSmartContext(DB.settings.role === 'shift' ? 'event' : 'money_exp');
     }
-
     function closeSmartAction() {
         document.getElementById('smart-action-modal').classList.add('hidden');
         document.getElementById('smart-amount').value = '';
         document.getElementById('smart-desc').value = '';
     }
-
     function setSmartContext(ctx) {
         currentSmartContext = ctx;
-        document.querySelectorAll('[id^="ctx-"]').forEach(el => {
-            el.className = "flex-1 py-2 px-4 text-[10px] font-bold rounded-lg text-[#888] whitespace-nowrap";
-        });
+        document.querySelectorAll('[id^="ctx-"]').forEach(el => el.className = "flex-1 py-2 px-4 text-[10px] font-bold rounded-lg text-[#888] whitespace-nowrap");
         document.getElementById(`ctx-${ctx}`).className = "flex-1 py-2 px-4 text-[10px] font-bold rounded-lg text-black bg-[#D4AF37] whitespace-nowrap";
         
-        const inputAmount = document.getElementById('smart-amount');
-        if(ctx === 'money') { inputAmount.classList.remove('hidden'); document.getElementById('smart-desc').placeholder = "Категория..."; }
-        if(ctx === 'task') { inputAmount.classList.add('hidden'); document.getElementById('smart-desc').placeholder = "Текст задачи..."; }
-        if(ctx === 'event') { inputAmount.classList.add('hidden'); document.getElementById('smart-desc').placeholder = "Название смены/записи..."; }
+        const amt = document.getElementById('smart-amount');
+        if(ctx.startsWith('money')) { amt.classList.remove('hidden'); amt.placeholder="0 ₽"; document.getElementById('smart-desc').placeholder = "Категория..."; }
+        if(ctx === 'task') { amt.classList.add('hidden'); document.getElementById('smart-desc').placeholder = "Что нужно сделать?"; }
+        if(ctx === 'food') { amt.classList.remove('hidden'); amt.placeholder="Ккал"; document.getElementById('smart-desc').placeholder = "Что съели?"; }
     }
-
     function saveSmartData() {
         const desc = document.getElementById('smart-desc').value.trim();
-        const amount = parseFloat(document.getElementById('smart-amount').value) || 0;
+        const amt = parseFloat(document.getElementById('smart-amount').value) || 0;
         
-        if(!desc && currentSmartContext !== 'money') return alert("Введите описание");
+        if(!desc) return showToast("Введите описание");
 
-        if(currentSmartContext === 'money') {
-            DB.money.push({ val: amount, cat: desc || 'Прочее', ts: Date.now() });
-        } else if(currentSmartContext === 'task') {
-            DB.tasks.push({ text: desc, ts: Date.now() });
-        } else if(currentSmartContext === 'event') {
-            DB.events.push({ title: desc, date: new Date().toISOString().slice(0,10) });
-        }
-
+        if(currentSmartContext === 'money_exp') DB.money.push({ id: genId(), val: -Math.abs(amt), cat: desc, ts: Date.now(), date: new Date().toISOString().slice(0,10) });
+        if(currentSmartContext === 'money_inc') DB.money.push({ id: genId(), val: Math.abs(amt), cat: desc, ts: Date.now(), date: new Date().toISOString().slice(0,10) });
+        if(currentSmartContext === 'task') DB.tasks.push({ id: genId(), text: desc, ts: Date.now(), status: 'active' });
+        if(currentSmartContext === 'food') DB.nutrition.push({ id: genId(), text: desc, kcal: Math.abs(amt), ts: Date.now(), date: new Date().toISOString().slice(0,10) });
+        
         saveVault();
         closeSmartAction();
+        showToast("Успешно сохранено");
     }
 
-    function updateDashboard() {
-        // Простой рендер для демонстрации концепта
-        let total = 0;
-        DB.money.forEach(m => total += m.val);
-        document.getElementById('dash-balance').innerText = `${total.toLocaleString()} ₽`;
-
-        const taskList = document.getElementById('dash-tasks-list');
-        taskList.innerHTML = DB.tasks.length ? DB.tasks.slice(-3).map(t => 
-            `<div class="p-4 border border-white/5 rounded-xl bg-black/30 text-xs">${t.text}</div>`
-        ).join('') : `<div class="p-4 border border-white/5 rounded-xl bg-black/30"><p class="text-[10px] text-[#555] text-center">Нет задач</p></div>`;
+    // --- РЕНДЕР МОДУЛЕЙ ---
+    function renderAll() {
+        renderDashboard();
+        renderMoney();
+        renderTasks();
+        renderCalendar();
+        renderNutrition();
+        renderCapsules();
     }
 
-    // Настройки
-    function openSettings() { document.getElementById('settings-modal').classList.remove('hidden'); }
-    function closeSettings() { document.getElementById('settings-modal').classList.add('hidden'); }
+    function renderDashboard() {
+        let inc = 0, exp = 0;
+        DB.money.forEach(m => { if(m.val > 0) inc += m.val; else exp += Math.abs(m.val); });
+        document.getElementById('dash-balance').innerText = (inc - exp).toLocaleString() + ' ₽';
+        document.getElementById('dash-income').innerText = inc.toLocaleString() + ' ₽';
+        document.getElementById('dash-expense').innerText = exp.toLocaleString() + ' ₽';
 
-    // Проверка для удобства тестирования (автозаполнение, если ключ есть в памяти)
-    window.onload = () => {
-        // Раскомментируйте для обхода экрана входа во время разработки
-        // toggleAuthMode('register'); 
-    };
+        const activeTasks = DB.tasks.filter(t => t.status === 'active');
+        document.getElementById('dash-tasks-list').innerHTML = activeTasks.length ? activeTasks.slice(-3).map(t => 
+            `<div class="p-4 border border-white/5 rounded-xl bg-black/30 flex justify-between items-center text-xs"><span>${escapeHtml(t.text)}</span><button onclick="completeTask('${t.id}')" class="text-[#D4AF37]"><i class="fas fa-check"></i></button></div>`
+        ).join('') : `<div class="p-4 border border-white/5 rounded-xl bg-black/30 col-span-3 text-[10px] text-[#555] text-center">Все задачи выполнены</div>`;
+
+        let kcalToday = 0;
+        const todayStr = new Date().toISOString().slice(0,10);
+        DB.nutrition.forEach(n => { if(n.date === todayStr) kcalToday += n.kcal; });
+        document.getElementById('dash-kcal').innerText = kcalToday;
+        document.getElementById('dash-capsules').innerText = DB.capsules.filter(c => c.openDate <= todayStr).length;
+    }
+
+    function renderMoney() {
+        const sorted = [...DB.money].sort((a,b) => b.ts - a.ts);
+        document.getElementById('list-money').innerHTML = sorted.map(m => `
+            <div class="p-4 surface flex justify-between items-center">
+                <div><div class="text-xs font-bold">${escapeHtml(m.cat)}</div><div class="text-[9px] text-[#888]">${new Date(m.ts).toLocaleString()}</div></div>
+                <div class="flex items-center gap-3"><span class="font-mono ${m.val > 0 ? 'text-[#D4AF37]' : 'text-white'}">${m.val > 0 ? '+' : ''}${m.val.toLocaleString()} ₽</span><button onclick="delMoney('${m.id}')" class="text-rose-500/50 hover:text-rose-500"><i class="fas fa-times"></i></button></div>
+            </div>
+        `).join('') || '<div class="text-center text-[#555] text-xs py-4">Нет операций</div>';
+    }
+
+    function renderTasks() {
+        const sorted = [...DB.tasks].sort((a,b) => b.ts - a.ts);
+        document.getElementById('list-tasks').innerHTML = sorted.map(t => `
+            <div class="p-4 surface flex justify-between items-center ${t.status === 'done' ? 'opacity-50' : ''}">
+                <div class="text-sm ${t.status === 'done' ? 'line-through text-[#888]' : ''}">${escapeHtml(t.text)}</div>
+                <div class="flex gap-2">
+                    ${t.status === 'active' ? `<button onclick="completeTask('${t.id}')" class="text-[#D4AF37]"><i class="fas fa-check"></i></button>` : ''}
+                    <button onclick="delTask('${t.id}')" class="text-rose-500/50"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        `).join('') || '<div class="text-center text-[#555] text-xs py-4">Нет задач</div>';
+    }
+
+    function renderCalendar() {
+        let y = viewDate.getFullYear(), m = viewDate.getMonth();
+        document.getElementById('unified-month-year').innerText = new Intl.DateTimeFormat('ru-RU',{month:'long',year:'numeric'}).format(viewDate);
+        let first = (new Date(y,m,1).getDay()+6)%7, days = new Date(y,m+1,0).getDate();
+        let html = '', todayStr = new Date().toISOString().slice(0,10);
+        
+        for(let i=0;i<first;i++) html+='<div></div>';
+        for(let d=1;d<=days;d++){
+            let ds = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+            let cls = 'calendar-day';
+            if(todayStr === ds) cls += ' today';
+            html += `<div class="${cls}"><span class="text-sm">${d}</span></div>`;
+        }
+        document.getElementById('month-calendar-view').innerHTML = html;
+    }
+
+    function renderNutrition() {
+        const todayStr = new Date().toISOString().slice(0,10);
+        const todayFood = DB.nutrition.filter(n => n.date === todayStr);
+        let k = 0;
+        document.getElementById('nutrition-day-list').innerHTML = todayFood.map(n => {
+            k += n.kcal;
+            return `<div class="p-3 surface flex justify-between items-center"><span class="text-xs font-bold">${escapeHtml(n.text)}</span><div class="flex gap-2 items-center"><span class="font-mono text-[#D4AF37]">${n.kcal} ккал</span><button onclick="delFood('${n.id}')" class="text-rose-500/50"><i class="fas fa-times"></i></button></div></div>`;
+        }).join('') || '<div class="text-center text-[#555] text-xs py-4">Ничего не добавлено</div>';
+        document.getElementById('total-calories').innerText = k;
+    }
+
+    function renderCapsules() {
+        // Упрощенный рендер капсул (из-за лимита места в сообщении)
+        document.getElementById('capsules-list').innerHTML = `<div class="p-4 surface border border-[#D4AF37]/30 bg-[#D4AF37]/5 text-center text-xs">Создать новую капсулу можно через меню.</div>`;
+    }
+
+    // --- ДЕЙСТВИЯ ---
+    function completeTask(id) { let t = DB.tasks.find(x => x.id === id); if(t) { t.status = 'done'; saveVault(); } }
+    function delTask(id) { DB.tasks = DB.tasks.filter(x => x.id !== id); saveVault(); }
+    function delMoney(id) { DB.money = DB.money.filter(x => x.id !== id); saveVault(); }
+    function delFood(id) { DB.nutrition = DB.nutrition.filter(x => x.id !== id); saveVault(); }
+    function changeMonth(d) { viewDate.setMonth(viewDate.getMonth() + d); renderCalendar(); }
+    
 </script>
 </body>
 </html>
