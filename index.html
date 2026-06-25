@@ -2,17 +2,59 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neroma | Secure Assistant</title>
     <style>
-        body { background-color: #0a0a0f; color: #e0e0e0; font-family: 'Arial', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: #16161e; padding: 2rem; border-radius: 15px; text-align: center; border: 1px solid #333; }
-        h1 { color: #d4af37; }
+        :root { --bg: #0a0a0f; --accent: #d4af37; --text: #e0e0e0; }
+        body { background-color: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 20px; }
+        .app-container { width: 100%; max-width: 500px; background: #16161e; padding: 20px; border-radius: 20px; border: 1px solid #333; }
+        h1 { color: var(--accent); text-align: center; font-size: 1.5rem; }
+        input, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #252530; color: white; box-sizing: border-box; }
+        button { background: var(--accent); color: black; font-weight: bold; cursor: pointer; border: none; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>Neroma</h1>
-        <p>Система защиты инициализирована.</p>
+    <div class="app-container">
+        <h1>NEROMA</h1>
+        <div id="auth-section">
+            <input type="password" id="masterPassword" placeholder="Введите мастер-пароль">
+            <button onclick="unlock()">Войти в сейф</button>
+        </div>
+        <div id="app-section" style="display:none;">
+            <input type="text" id="noteInput" placeholder="Новая задача...">
+            <button onclick="saveNote()">Сохранить в облако</button>
+        </div>
     </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCsbFRT6qv_S_UcgrUQn6dCnJqiYTpLuh8",
+            authDomain: "neroma-data.firebaseapp.com",
+            projectId: "neroma-data",
+            storageBucket: "neroma-data.firebasestorage.app",
+            messagingSenderId: "664569197862",
+            appId: "1:664569197862:web:f78152be076d2c0e0fbde7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.unlock = () => {
+            const pass = document.getElementById('masterPassword').value;
+            if(pass) { 
+                document.getElementById('auth-section').style.display = 'none';
+                document.getElementById('app-section').style.display = 'block';
+            }
+        };
+
+        window.saveNote = async () => {
+            const text = document.getElementById('noteInput').value;
+            await addDoc(collection(db, "notes"), { content: text, timestamp: new Date() });
+            alert("Сохранено!");
+        };
+    </script>
 </body>
 </html>
